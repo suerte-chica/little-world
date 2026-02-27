@@ -15,6 +15,8 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     name: Build and Deploy
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
@@ -49,6 +51,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request
+    permissions: {}
 
     steps:
       - name: Close Pull Request
