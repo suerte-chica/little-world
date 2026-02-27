@@ -1,0 +1,450 @@
+/* ==========================================================================
+   Custom theme: gradient colours, hero sections, responsive, accessible
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties (design tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Gradient palette */
+  --gradient-start: #4f46e5;
+  --gradient-mid:   #7c3aed;
+  --gradient-end:   #ec4899;
+
+  /* Derived colours */
+  --color-primary:       #7c3aed;
+  --color-accent:        #ec4899;
+  --color-primary-light: #a78bfa;
+  --color-accent-light:  #f9a8d4;
+
+  /* Hero dimensions */
+  --hero-height:         420px;
+  --hero-height-mobile:  280px;
+
+  /* Transition */
+  --transition-base: 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Material theme colour overrides
+   -------------------------------------------------------------------------- */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:         var(--color-primary);
+  --md-primary-fg-color--light:  var(--color-primary-light);
+  --md-primary-fg-color--dark:   var(--gradient-start);
+  --md-accent-fg-color:          var(--color-accent);
+  --md-typeset-a-color:          var(--color-primary);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:         var(--color-primary-light);
+  --md-primary-fg-color--light:  var(--color-accent-light);
+  --md-primary-fg-color--dark:   var(--color-primary);
+  --md-accent-fg-color:          var(--color-accent-light);
+  --md-typeset-a-color:          var(--color-primary-light);
+  --md-default-bg-color:         #0f0f1a;
+  --md-default-fg-color:         rgba(255, 255, 255, 0.87);
+}
+
+/* Header gradient */
+.md-header {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 60%, var(--gradient-end) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   3. Hero Section
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: var(--hero-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+
+  /* Gradient background */
+  background:
+    url("../assets/hero-bg.svg") center / cover no-repeat,
+    linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 55%, var(--gradient-end) 100%);
+
+  /* Pull the hero flush against the header */
+  margin-top: -0.6rem;
+  padding: 3rem 1.5rem;
+}
+
+/* Subtle overlay for text legibility */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  animation: hero-fade-in 0.8s ease both;
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero__title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.hero__subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 2rem;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  line-height: 1.5;
+}
+
+.hero__cta {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff !important;
+  background: linear-gradient(135deg, var(--gradient-end), var(--gradient-mid));
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: 0 4px 20px rgba(236, 72, 153, 0.45);
+}
+
+.hero__cta:hover,
+.hero__cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(236, 72, 153, 0.55);
+  outline: 3px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+/* Responsive hero */
+@media (max-width: 768px) {
+  .hero {
+    min-height: var(--hero-height-mobile);
+    padding: 2rem 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Navigation tabs gradient strip
+   -------------------------------------------------------------------------- */
+.md-tabs {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 60%, var(--gradient-end) 100%);
+}
+
+.md-tabs__link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  transition: color var(--transition-base);
+}
+
+.md-tabs__link--active,
+.md-tabs__link:hover {
+  color: #fff !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Gradient headings
+   -------------------------------------------------------------------------- */
+.md-typeset h1,
+.md-typeset h2 {
+  background: linear-gradient(90deg, var(--gradient-mid), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Fallback for browsers that don't support background-clip: text */
+@supports not (-webkit-background-clip: text) {
+  .md-typeset h1,
+  .md-typeset h2 {
+    color: var(--color-primary);
+  }
+}
+
+/* Dark mode headings — slightly lighter gradient */
+[data-md-color-scheme="slate"] .md-typeset h1,
+[data-md-color-scheme="slate"] .md-typeset h2 {
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-accent-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   6. Cards & feature grid (used on home page)
+   -------------------------------------------------------------------------- */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.feature-card {
+  border-radius: 16px;
+  padding: 1.75rem 1.5rem;
+  background: var(--md-default-bg-color);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.08);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(79, 70, 229, 0.18);
+}
+
+.feature-card__icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.feature-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--md-default-fg-color);
+}
+
+.feature-card__desc {
+  font-size: 0.95rem;
+  color: var(--md-default-fg-color--light);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. Buttons (gradient style)
+   -------------------------------------------------------------------------- */
+.md-button--primary {
+  background: linear-gradient(135deg, var(--gradient-mid), var(--gradient-end)) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 50px !important;
+  font-weight: 700 !important;
+  transition: filter var(--transition-base), transform var(--transition-base) !important;
+}
+
+.md-button--primary:hover,
+.md-button--primary:focus-visible {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.md-button {
+  border-radius: 50px !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. Blog post cards
+   -------------------------------------------------------------------------- */
+.md-post__header .md-post__meta {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   9. Contact form
+   -------------------------------------------------------------------------- */
+.contact-form {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--md-default-fg-color);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  border: 2px solid rgba(124, 58, 237, 0.2);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--gradient-mid), var(--gradient-end));
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--transition-base), transform var(--transition-base);
+  align-self: flex-start;
+}
+
+.form-submit:hover,
+.form-submit:focus-visible {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  outline: 3px solid rgba(124, 58, 237, 0.4);
+  outline-offset: 2px;
+}
+
+.form-note {
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   10. Footer gradient stripe
+   -------------------------------------------------------------------------- */
+.md-footer {
+  border-top: 4px solid transparent;
+  border-image: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end)) 1;
+}
+
+/* --------------------------------------------------------------------------
+   11. Accessibility: focus-visible ring
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Skip-to-content link (accessibility)
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: -999px;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   13. Gradient badge
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  padding: 0.2em 0.75em;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gradient-mid), var(--gradient-end));
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   14. Dark mode adjustments
+   -------------------------------------------------------------------------- */
+[data-md-color-scheme="slate"] .feature-card {
+  border-color: rgba(167, 139, 250, 0.2);
+  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-md-color-scheme="slate"] .form-group input,
+[data-md-color-scheme="slate"] .form-group textarea,
+[data-md-color-scheme="slate"] .form-group select {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(167, 139, 250, 0.3);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+[data-md-color-scheme="slate"] .hero::before {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   15. Responsive utilities
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Smooth page transitions */
+.md-content {
+  animation: content-fade-in 0.4s ease both;
+}
+
+@keyframes content-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

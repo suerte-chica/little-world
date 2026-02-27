@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if page.meta.hero_title or page.meta.hero_subtitle %}
+  <div class="hero" role="banner" aria-label="Page hero section">
+    <div class="hero__inner">
+      {% if page.meta.hero_title %}
+      <h1 class="hero__title">{{ page.meta.hero_title }}</h1>
+      {% endif %}
+      {% if page.meta.hero_subtitle %}
+      <p class="hero__subtitle">{{ page.meta.hero_subtitle }}</p>
+      {% endif %}
+      {% if page.meta.hero_cta_text and page.meta.hero_cta_link %}
+      <a href="{{ page.meta.hero_cta_link }}" class="hero__cta md-button md-button--primary">
+        {{ page.meta.hero_cta_text }}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  {{ super() }}
+{% endblock %}
